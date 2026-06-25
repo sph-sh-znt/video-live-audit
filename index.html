@@ -6,7 +6,7 @@
 <title>视频号直播AI合规审核系统</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#333;line-height:1.6}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f5f7fa;color:#333;line-height:1.6}
 .container{max-width:1000px;margin:0 auto;padding:20px}
 header{text-align:center;padding:30px 20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:12px;margin-bottom:24px}
 header h1{font-size:24px;margin-bottom:8px}
@@ -17,15 +17,19 @@ header p{opacity:.85;font-size:14px}
 .panel h2{font-size:16px;color:#555;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #f0f0f0}
 .form-group{margin-bottom:16px}
 .form-group label{display:block;font-size:13px;color:#666;margin-bottom:6px;font-weight:600}
-select,textarea{width:100%;padding:10px 12px;border:2px solid #e4e4e7;border-radius:8px;font-size:14px;font-family:inherit;transition:border-color .2s}
-select:focus, textarea:focus{outline:none;border-color:#667eea}
+select,textarea{width:100%;padding:10px 12px;border:2px solid #e4e4e7;border-radius:8px;font-size:14px;font-family:inherit}
+select:focus,textarea:focus{outline:none;border-color:#667eea}
 textarea{min-height:200px;resize:vertical;line-height:1.8}
-.btn{display:inline-block;padding:11px 24px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;width:100%}
+.btn{display:block;width:100%;padding:11px 24px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;margin-bottom:8px}
 .btn-primary{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(102,126,234,.35)}
+.btn-primary:hover{opacity:.9}
 .btn-secondary{background:#f0f0f0;color:#555}
 .btn-secondary:hover{background:#e4e4e7}
-.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.btn-upload{display:inline-block;width:auto;padding:8px 18px;border:2px dashed #667eea;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;color:#667eea;background:#f8faff;margin-bottom:8px;transition:all .2s}
+.btn-upload:hover{background:#eef2ff;border-color:#5533cc}
+.btn-upload input{display:none}
+.file-name{font-size:12px;color:#059669;margin-left:8px;display:inline-block;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.drop-zone-active{border-color:#667eea!important;background:#eef2ff!important}
 .badge{display:inline-flex;align-items:center;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:600}
 .badge-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
 .badge-yellow{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
@@ -34,9 +38,9 @@ textarea{min-height:200px;resize:vertical;line-height:1.8}
 .violation-red{background:#fef2f2;border-left-color:#dc2626}
 .violation-yellow{background:#fffbeb;border-left-color:#f9a825}
 .violation-green{background:#f0fdf4;border-left-color:#84cc16}
-.violation-item .v-label{font-size:12px;font-weight:700;margin-bottom:4px;display:block}
-.violation-item .v-text{font-size:14px;color:#444;margin-bottom:6px}
-.violation-item .v-fix{font-size:13px;color:#059669;background:#ecfdf5;padding:6px 10px;border-radius:6px;display:inline-block;margin-top:4px}
+.v-label{font-size:12px;font-weight:700;margin-bottom:4px;display:block}
+.v-text{font-size:14px;color:#444;margin-bottom:6px}
+.v-fix{font-size:13px;color:#059669;background:#ecfdf5;padding:6px 10px;border-radius:6px;display:inline-block;margin-top:4px}
 .chain-warning{background:#fffbeb;border:1px dashed #f59e0b;border-radius:8px;padding:14px;margin:12px 0}
 .chain-warning h4{color:#b45309;font-size:14px;margin-bottom:8px}
 .chain-warning p{font-size:13px;color:#78350f}
@@ -45,37 +49,53 @@ textarea{min-height:200px;resize:vertical;line-height:1.8}
 .stat-card .num{font-size:22px;font-weight:700;color:#667eea}
 .stat-card .label{font-size:11px;color:#9ca3af;margin-top:2px}
 .tabs{display:flex;gap:4px;margin-bottom:16px;background:#f3f4f6;padding:4px;border-radius:8px}
-.tab{flex:1;padding:8px 12px;border:none;background:transparent;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;color:#666;transition:all .2s;text-align:center}
-.tab.active{background:#fff;color:#667eea;box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:600}
+.tab{flex:1;padding:8px 12px;border:none;background:transparent;border-radius:6px;font-size:13px;cursor:pointer;color:#666;text-align:center}
+.tab.active{background:#fff;color:#667eea;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 .tab-content{display:none}.tab-content.active{display:block}
-.result-section{margin-bottom:20px}
-.result-section h3{font-size:15px;color:#444;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .empty-state{text-align:center;padding:40px 20px;color:#9ca3af;font-size:14px}
-.loading{text-align:center;padding:40px;color:#667eea}
-.loading::after{content:"";display:inline-block;width:20px;height:20px;border:3px solid #e4e4e7;border-top-color:#667eea;border-radius:50%;animation:spin .6s linear infinite;margin-left:8px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-.copy-btn{background:#ecfdf5;color:#059669;border:1px solid #bbf7d0;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;float:right;margin-top:4px}
-.copy-btn:hover{background:#d1fae5}
-.fixed-text{font-size:13px;color:#059669;background:#ecfdf5;padding:8px 12px;border-radius:6px;margin:12px 0;line-height:1.7;border-left:3px solid #84cc16}
+.loading{text-align:center;padding:40px;color:#667eea;font-size:15px}
+.copy-btn{background:#ecfdf5;color:#059669;border:1px solid #bbf7d0;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer}
 footer{text-align:center;padding:20px;color:#9ca3af;font-size:12px;margin-top:30px}
 .help-section{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px;margin-top:16px}
 .help-section h4{color:#1d4ed8;font-size:13px;margin-bottom:8px}
 .help-section ul{padding-left:18px;font-size:13px;color:#3b82f6}
 .help-section li{margin:4px 0}
+/* 标注颜色 - 违规词（删除线） */
+.hl-red{background:#fecaca;color:#991b1b;padding:2px 5px;border-radius:3px;font-weight:600;text-decoration:line-through;cursor:help;position:relative}
+.hl-yellow{background:#fef08a;color:#854d0e;padding:2px 5px;border-radius:3px;font-weight:600;text-decoration:line-through;cursor:help;position:relative}
+.hl-mid{background:#fed7aa;color:#9a3412;padding:2px 5px;border-radius:3px;font-weight:500;text-decoration:line-through;cursor:help;position:relative}
+.hl-low{background:#bbf7d0;color:#166534;padding:2px 5px;border-radius:3px;text-decoration:line-through;cursor:help;position:relative}
+/* tooltip 悬停提示 */
+.hl-red:hover::after,.hl-yellow:hover::after,.hl-mid:hover::after,.hl-low:hover::after{
+content:attr(data-tip);
+position:absolute;bottom:120%;left:50%;transform:translateX(-50%);
+background:#1f2937;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;
+white-space:nowrap;z-index:10;font-weight:normal;pointer-events:none;
+box-shadow:0 4px 12px rgba(0,0,0,.15)
+}
+/* 修改建议 */
+.fix-text{color:#059669;font-weight:500;background:#ecfdf5;padding:2px 5px;border-radius:3px;margin-left:4px}
+/* 违规+修改 整体行内块 */
+.violation-block{display:inline}
+.arrow{color:#9ca3af;margin:0 2px;font-size:12px}
+.fixed-text-area{background:#fff;padding:16px;border-radius:8px;font-size:14px;line-height:2.4;white-space:pre-wrap;word-break:break-all;border:1px solid #e4e4e7}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;padding:10px;background:#f9fafb;border-radius:8px;font-size:12px;align-items:center}
+.legend-item{display:flex;align-items:center;gap:4px}
+.legend-dot{width:14px;height:14px;border-radius:3px;display:inline-block}
 </style>
+<script src="https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body>
 <div class="container">
 <header>
 <h1>🛡️ 视频号直播AI合规审核系统</h1>
-<p>v1.2 · 内置162条规则 + 270个关键词 + 三业务线差异化</p>
+<p>v1.5.1 · 标注格式优化 · 颜色标注违规词 + 内联修改建议</p>
 </header>
 
 <div class="main-grid">
-<!-- 左侧：输入区 -->
 <div class="panel" style="position:sticky;top:20px">
 <h2>📝 审核配置</h2>
-
 <div class="form-group">
 <label>选择业务线</label>
 <select id="businessLine">
@@ -84,7 +104,6 @@ footer{text-align:center;padding:20px;color:#9ca3af;font-size:12px;margin-top:30
 <option value="ip-ad">IP投流（张震卡片）</option>
 </select>
 </div>
-
 <div class="form-group">
 <label>选择账号状态</label>
 <select id="accountStatus">
@@ -94,411 +113,391 @@ footer{text-align:center;padding:20px;color:#9ca3af;font-size:12px;margin-top:30
 <option value="recover">🔴 恢复期（近7-30天有封禁）</option>
 </select>
 </div>
-
 <div class="form-group">
-<label>粘贴直播话术 / 脚本 / 逐字稿</label>
+<label>粘贴直播话术 / 脚本 / 逐字稿，或上传文档</label>
+<label class="btn-upload" id="uploadLabel">
+📎 上传文档（支持 .txt / .docx / .pdf）
+<input type="file" id="fileInput" accept=".txt,.text,.docx,.doc,.pdf">
+<span class="file-name" id="fileName"></span>
+</label>
 <textarea id="inputText" placeholder="在这里粘贴你的直播话术...
 
 示例：
-欢迎新进直播间的同学，咱们这里是行业内的品牌直播间，今天给到大家的是5天声音美化课程..."></textarea>
+欢迎新进直播间的同学，咱们这里是行业内的品牌直播间，今天给到大家的是5天声音美化课程...
+
+💡 也支持拖拽文件到输入框（.txt/.docx/.pdf）"></textarea>
 </div>
-
-<button class="btn btn-primary" onclick="doAudit()" style="margin-bottom:8px">🚀 开始审核</button>
-<button class="btn btn-secondary" onclick="clearAll()">🗑️ 清空重填</button>
-
+<button class="btn btn-primary" id="btnAudit">🚀 开始审核</button>
+<button class="btn btn-secondary" id="btnClear">🗑️ 清空重填</button>
 <div class="help-section">
 <h4>💡 使用提示</h4>
 <ul>
-<li>有声投放：最严模式，双审（内容+广告）</li>
-<li>IP自然流：相对宽松，连麦+关注引流</li>
-<li>IP投流：严格模式，注意收益暗语</li>
-<li>恢复期账号：所有风险自动升一级</li>
+<li>🔴 红线 = 必须修改 · 🟡 高危 = 建议修改 · ⚠️ 中危 = 可选修改</li>
+<li>📎 支持 .txt / .docx / .pdf 文档上传和拖拽</li>
+<li>📋 标注全文模式：违规词颜色标注 + 修改建议内联显示</li>
 </ul>
 </div>
 </div>
 
-<!-- 右侧：结果区 -->
 <div class="panel" id="resultPanel">
 <div id="emptyState" class="empty-state">
 <p>📋 粘贴话术后点击"开始审核"</p>
 <p style="margin-top:8px;font-size:12px">系统将自动扫描 🔴硬性违规 / 🟡软性风险 / ⚠️语义链路</p>
 </div>
-<div id="loadingState" class="loading" style="display:none">正在审核中</div>
+<div id="loadingState" class="loading" style="display:none">正在审核中，请稍候...</div>
 <div id="resultContent" style="display:none">
-
-<!-- 总判定 -->
-<div class="result-header">
-<span>总判定：</span>
-<span id="overallBadge" class="badge"></span>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+<span>总判定：<span id="overallBadge" class="badge"></span></span>
 </div>
 <div class="stats-bar">
-<div class="stat-card"><div class="num" id="statRed">0</div><div class="label">🔴 线</div></div>
+<div class="stat-card"><div class="num" id="statRed">0</div><div class="label">🔴 红线</div></div>
 <div class="stat-card"><div class="num" id="statYellow">0</div><div class="label">🟡 高危</div></div>
 <div class="stat-card"><div class="num" id="statMid">0</div><div class="label">⚠️ 中危</div></div>
 <div class="stat-card"><div class="num" id="statLow">0</div><div class="label">🟢 低危</div></div>
 </div>
-
-<!-- Tab切换 -->
 <div class="tabs">
-<div class="tab active" onclick="switchTab('violations',this)">🔴 违规清单 (<span id="tabVCount">0</span>)</div>
-<div class="tab" onclick="switchTab('chains',this)">⚠️ 链路检测 (<span id="tabCCount">0</span>)</div>
-<div class="tab" onclick="switchTab('fixed',this)">✅ 修改后全文</div>
+<div class="tab active" data-tab="violations">🔴 违规清单 (<span id="tabVCount">0</span>)</div>
+<div class="tab" data-tab="chains">⚠️ 链路检测 (<span id="tabCCount">0</span>)</div>
+<div class="tab" data-tab="fixed">📋 标注全文</div>
 </div>
-
-<!-- Tab1: 违规清单 -->
-<div id="tab-violations" class="tab-content active">
-<div id="violationList"></div>
-</div>
-
-<!-- Tab2: 链路检测 -->
-<div id="tab-chains" class="tab-content">
-<div id="chainList"></div>
-</div>
-
-<!-- Tab3: 修改后全文 -->
+<div id="tab-violations" class="tab-content active"><div id="violationList"></div></div>
+<div id="tab-chains" class="tab-content"><div id="chainList"></div></div>
 <div id="tab-fixed" class="tab-content">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<span style="font-size:13px;color:#666">以下是根据规则修改后的安全版本</span>
-<button class="copy-btn" onclick="copyFixed()">📋 复制全文</button>
+<span style="font-size:13px;color:#666">原文保留，颜色标注违规位置 · 鼠标悬停查看修改建议</span>
+<button class="copy-btn" id="btnCopy">📋 复制原文</button>
 </div>
-<div id="fixedText" style="background:#f9fafb;padding:16px;border-radius:8px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-break:break-all"></div>
+<div class="legend">
+<div class="legend-item"><span class="legend-dot" style="background:#fecaca"></span>🔴 红线-必须改</div>
+<div class="legend-item"><span class="legend-dot" style="background:#fef08a"></span>🟡 高危-建议改</div>
+<div class="legend-item"><span class="legend-dot" style="background:#fed7aa"></span>⚠️ 中危-可改</div>
+<div class="legend-item"><span class="legend-dot" style="background:#bbf7d0"></span>🟢 低危-注意</div>
 </div>
-
+<div id="fixedText" class="fixed-text-area"></div>
 </div>
 </div>
 </div>
 
 <footer>
-<p>视频号直播AI合规审核系统 v1.2 · 规则来源：《微信视频号直播行为规范》《运营规范》《低质量内容认定细则》《违规案例库2026.06》</p>
-<p>有问题反馈给于彤/晓静 · 规则每周迭代更新</p>
+<p>🛡️ 视频号直播AI合规审核系统 v1.5.1</p>
+<p>💬 有问题反馈给于彤/晓静 · 规则每周迭代更新</p>
 </footer>
 </div>
 
 <script>
-// ========== 规则数据 ==========
-const RULES = {
-// 品牌违禁（所有线通用）
-brand: [
-{w:["喜马拉雅","喜马","喜马官方","喜马生态"],l:"品牌违禁",r:"红线",fix:"行业内 / 有声行业 / 品牌企业"},
-{w:["官方直播间","官方课程","官方渠道","官方招募"],l:"品牌违禁",r:"红线",fix:"品牌直播间 / 课程配套"},
+var RULES = {
+brand:[
+{w:["喜马拉雅","喜马","喜马官方","喜马生态"],l:"品牌违禁",r:"红线",fix:"有声行业"},
+{w:["官方直播间","官方课程","官方渠道","官方招募"],l:"品牌违禁",r:"红线",fix:"品牌直播间"}
 ],
-// 收益直接表达
-income: [
-{w:["月入","一小时赚","日薪","时薪","年薪","创收"],l:"收益承诺",r:"红线",fix:"删除或改为'学完可从事相关工作'"},
-{w:["赚钱","搞钱","搞米","挣钱","变现","录书赚钱","声音变现"],l:"收益承诺",r:"红线",fix:"提升自己 / 发展兴趣爱好 / 多一种可能性"},
-{w:["兼职","副业","第二职业","工作","接单","荷包鼓鼓","赚外快","零花钱"],l:"收益承诺(投放)",r:"红线",fix:"删除任何收益暗示"},
-{w:["创收(视频号)"],l:"收益承诺(视频号致命)",r:"红线",fix:"绝对禁用此词"},
+income:[
+{w:["月入","一小时赚","日薪","时薪","年薪","创收"],l:"收益承诺",r:"红线",fix:"学完后多一个发展方向"},
+{w:["赚钱","搞钱","搞米","挣钱","变现","录书赚钱","声音变现"],l:"收益承诺",r:"红线",fix:"提升自己"},
+{w:["兼职","副业","第二职业","接单","荷包鼓鼓","赚外快","零花钱"],l:"收益承诺(投放)",r:"红线",fix:"多掌握一门技能"}
 ],
-// 收益暗语
-incomeHidden: [
-{w:["小果","大果","火锅","排骨","奶茶钱","奶茶自由","绿色通道","书单资源"],l:"收益暗语",r:"高危",fix:"删除食物类比和资源暗语"},
-{w:["口袋","塞得越来越满","满满","获得一些额外收获","收获颇丰"],l:"收益暗语",r:"高危",fix:"让声音更有魅力 / 有更多提升 / 丰富生活"},
-{w:["回本","值回票价","一米的票价早就值回来了"],l:"投入回报暗示",r:"高危",fix:"这个体验机会很难得 / 很有意义"},
-{w:["第二选择","Plan B","第二份收入","额外一份收获"],l:"副业暗示",r:"高危",fix:"多一项技能方向 / 多一种可能性"},
-{w:["改变未来生活质量","改变命运","改写人生","弯道超车","背靠大树好乘凉"],l:"结果承诺",r:"高危",fix:"让生活更丰富有趣 / 提升自己"},
-{w:["试了才有无限可能","给自己一个改变未来的机会"],l:"夸大价值",r:"中危",fix:"给自己一个提升的机会"},
+incomeHidden:[
+{w:["小果","大果","火锅","排骨","奶茶钱","奶茶自由","绿色通道","书单资源"],l:"收益暗语",r:"高危",fix:"小成果"},
+{w:["口袋","塞得越来越满","满满","获得一些额外收获","收获颇丰"],l:"收益暗语",r:"高危",fix:"收获满满"},
+{w:["回本","值回票价","一米的票价早就值回来了"],l:"投入回报暗示",r:"高危",fix:"非常值得"},
+{w:["第二选择","Plan B","第二份收入","额外一份收获"],l:"副业暗示",r:"高危",fix:"新的可能性"},
+{w:["改变未来生活质量","改变命运","改写人生","弯道超车","背靠大树好乘凉"],l:"结果承诺",r:"高危",fix:"让生活更精彩"}
 ],
-// IP投流专属暗语
-ipAdRisk: [
-{w:["获取一些额外收获","提高生活质量","获得感","把阅历优势放大以实现获得感"],l:"收益暗语(IP投流)",r:"红线",fix:"获得更多提升 / 让生活更丰富"},
-{w:["告诉你接书的路径在哪里","播放量越高收获也就越高","这个行业就是普通人入局的好机会"],l:"路径/机会暗示",r:"红线",fix:"删除，不提路径和入局"},
-{w:["升职加薪","让你的荷包更加丰满","收获的小果果买杯奶茶看个电影"],l:"收益隐喻",r:"红线",fix:"每天抽15分钟练一段旁白 / 学一个配音小技巧"},
-{w:["有声书平台和短剧平台长期合作","配音届天花板"],l:"虚假夸大",r:"高危",fix:"在行业里深耕多年 / 有丰富经验"},
+ipAdRisk:[
+{w:["获取一些额外收获","提高生活质量","获得感","把阅历优势放大以实现获得感"],l:"收益暗语(IP)",r:"红线",fix:"获得更多成长"},
+{w:["告诉你接书的路径在哪里","播放量越高收获也就越高","这个行业就是普通人入局的好机会"],l:"路径暗示",r:"红线",fix:"这个行业值得深入了解"},
+{w:["升职加薪","让你的荷包更加丰满","收获的小果果买杯奶茶看个电影"],l:"收益隐喻",r:"红线",fix:"每天抽15分钟练一段旁白"},
+{w:["有声书平台和短剧平台长期合作","配音届天花板"],l:"虚假夸大",r:"高危",fix:"在行业里深耕多年"}
 ],
-// 效果承诺
-promise: [
-{w:["包教包会","手把手教","秒懂","三天学会","XX天掌握","一定能","保证XX","肯定能"],l:"效果承诺",r:"红线",fix:"认真学能掌握 / 有机会可以 / 看个人努力程度"},
-{w:["我们帮你找","我们帮你挑","我们帮你匹配","我来帮你安排"],l:"资源承诺",r:"红线",fix:"课程里会介绍各方向 / 帮你了解"},
-{w:["你来负责教你只管认真学","只要你不挑","只要你愿意认真学"],l:"结果承诺",r:"高危",fix:"跟着老师一起学 / 认真对待就能有收获"},
-{w:["老师带着您学","全程带练带学","专属助教全程带学(无限定词)"],l:"效果承诺",r:"中危",fix:"老师带着大家一起学 / 助教陪伴学习"},
-{w:["不用自己摸索","不用动脑","有嘴就行","0门槛"],l:"夸张诱导",r:"中危",fix:"零基础可以开始 / 有清晰的学习路径"},
-{w:["原价199","原价XXX","限时X小时","仅限前X名","最后X个名额","马上结束","错过就没了"],l:"虚假紧迫感",r:"中危",fix:"需真实凭证否则删除 / 本期名额有限"},
-{w:["价值199的声音鉴定","外面找老师至少百八十"],l:"价格锚定",r:"中危",fix:"需真实佐证或删除价格对比"},
+promise:[
+{w:["包教包会","手把手教","秒懂","三天学会","一定能","保证","肯定能"],l:"效果承诺",r:"红线",fix:"认真学习就能掌握"},
+{w:["我们帮你找","我们帮你挑","我们帮你匹配","我来帮你安排"],l:"资源承诺",r:"红线",fix:"课程里会介绍各方向"},
+{w:["你来负责教你只管认真学","只要你不挑","只要你愿意认真学"],l:"结果承诺",r:"高危",fix:"跟着老师一起学"},
+{w:["不用自己摸索","不用动脑","有嘴就行","0门槛"],l:"夸张诱导",r:"中危",fix:"零基础也可以开始"},
+{w:["原价199","原价","限时","仅限前","最后","名额","马上结束","错过就没了"],l:"虚假紧迫感",r:"中危",fix:"本期优惠力度很大"}
 ],
-// 招聘引流
-recruit: [
-{w:["招主播","招人","招募","岗前培训","入职","招聘"],l:"招聘引流",r:"红线",fix:"绝对禁止，这是招聘引流直接封号"},
-{w:["加微信","加微","加V","私聊我","扫二维码","私某信","二某码"],l:"外部引流",r:"红线(投放)/中危(自然流)",fix:"按提示操作添加助教 / 用标准引流路径"},
-{w:["附近X米","加微","引流用语"],l:"位置引流",r:"红线",fix:"删除位置信息"},
+recruit:[
+{w:["招主播","招人","招募","岗前培训","入职","招聘"],l:"招聘引流",r:"红线",fix:"删除此句"},
+{w:["加微信","加微","加V","私聊我","扫二维码","私某信","二某码"],l:"外部引流",r:"红线/中危",fix:"按提示添加助教老师"}
 ],
-// 利益交换
-exchange: [
-{w:["报名就送声音鉴定","扣已加安排鉴定","打已加领福利","回来扣已加"],l:"利益诱导",r:"红线",fix:"删除'扣已加'等条件式表述，改为课程内含测评环节"},
-{w:["没加上助教是不行的","没加上是不行的(胁迫)"],l:"胁迫诱导",r:"中危",fix:"加上助教可以更好地服务你"},
-{w:["加上助教回来告诉我/回来公屏扣已加"],l:"利益诱导",r:"中危",fix:"报名后可主动联系助教参与测评"},
-{w:["见面礼","免费送","1元抢"],l:"低价诱导",r:"中危",fix:"本期福利 / 1元体验 / 包含XX"},
+exchange:[
+{w:["报名就送声音鉴定","扣已加安排鉴定","打已加领福利","回来扣已加"],l:"利益诱导",r:"红线",fix:"课程内含专业测评"},
+{w:["没加上助教是不行的"],l:"胁迫诱导",r:"中危",fix:"加上助教服务更好"},
+{w:["见面礼","免费送","1元抢"],l:"低价诱导",r:"中危",fix:"本期专属福利"}
 ],
-// 极限词
-extreme: [
-{w:["最好","第一","唯一","顶级","极致","绝对","百分百","100%","无敌","完美","史上最","终极","国家级","大牌","金牌","权威","名师","国牌"],l:"极限词",r:"高危",fix:"较好 / 领先 / 独特 / 优质 / 资深 / 很多"},
-{w:["全网","全国","首家","独家","首","家"],l:"极限词(范围)",r:"中危",fix:"业内 / 广泛 / 较早 / 率先"},
+extreme:[
+{w:["最好","第一","唯一","顶级","极致","绝对","百分百","100%","无敌","完美","史上最","终极","国家级","大牌","金牌","权威","名师"],l:"极限词",r:"高危",fix:"很棒"},
+{w:["全网","全国","首家","独家"],l:"极限词(范围)",r:"中危",fix:"业内领先"}
 ],
-// 低门槛组合
-lowThreshold: [
-{w:["在家带娃的宝妈","不上班的姐妹","有自己可以自由支配时间的朋友"],l:"人群圈定",r:"中危",fix:"可保留但注意后续不要接收益话术"},
-{w:["不用露脸","在家就做得到","时间灵活自由掌握","最少每天拿出20分钟"],l:"低门槛强调",r:"中危",fix:"单独使用安全，避免连续叠加"},
+lowThreshold:[
+{w:["在家带娃的宝妈","不上班的姐妹","有自己可以自由支配时间的朋友"],l:"人群圈定",r:"中危",fix:"想提升自己的朋友"},
+{w:["不用露脸","在家就做得到","时间灵活自由掌握","最少每天拿出20分钟"],l:"低门槛强调",r:"中危",fix:"随时随地都能练"}
 ]
 };
 
-// 语义链路定义
-const CHAINS = [
-{id:"C01",name:"收益诱导链",pattern:["学","创造价值","回报","改善","生活","收获","获得"],desc:"学习→创造价值→获得回报→改善生活"},
-{id:"C02",name:"机会诱导链",pattern:["学","角色","录制","机会","发展","实践"],desc:"学习→获得角色→获得录制机会→发展机会"},
-{id:"C03",name:"优势改变链",pattern:["学","优势","改变","未来","弯道超车"],desc:"学习→获得优势→改变未来"},
-{id:"C04",name:"利益交换链",pattern:["扣","加","打","安排","福利","鉴定","测评","登记"],desc:"完成指定动作→获得额外福利"},
-{id:"C05",name:"低门槛结果链",pattern:["宝妈","在家","不用","自由","灵活","时间","露脸"],desc:"低投入→低门槛→易获得结果"},
+var CHAINS = [
+{id:"C01",name:"收益诱导链",pattern:["学","创造价值","回报","改善","生活","收获","获得"]},
+{id:"C02",name:"机会诱导链",pattern:["学","角色","录制","机会","发展","实践"]},
+{id:"C03",name:"优势改变链",pattern:["学","优势","改变","未来","弯道超车"]},
+{id:"C04",name:"利益交换链",pattern:["扣","加","打","安排","福利","鉴定","测评","登记"]},
+{id:"C05",name:"低门槛结果链",pattern:["宝妈","在家","不用","自由","灵活","时间","露脸"]}
 ];
 
-// 安全替换白名单
-const SAFE_REPLACEMENTS = {
-"喜马拉雅":"行业内","喜马":"行业","官方":"品牌",
-"创造价值":"让声音更有魅力","赚钱":"提升自己","变现":"发展兴趣",
-"录主角":"了解不同类型作品","录好人":"尝试不同方向",
-"包教包会":"认真学能掌握","我们帮你匹配":"课程介绍各方向",
-"报名送鉴定":"课程包含测评环节","扣已加":"（删除）",
-"口袋塞满":"让声音更有魅力","收获颇丰":"有很多收获",
-"1米学全程":"1元体验5天课程","宝妈":"（可保留但注意语境）",
-};
+var STATUS_WEIGHT = {normal:{m:0},observe:{m:1},risk:{m:1.5},recover:{m:2}};
 
-// 业务线配置
-const LINE_CONFIG = {
-yousheng:{name:"有声投放",level:5,brandStrict:true,incomeStrict:true,exchangeStrict:true},
-"ip-natural":name:"IP自然流",level:3,brandStrict:true,incomeStrict:false,exchangeStrict:false},
-"ip-ad":name:"IP投流",level:4,brandStrict:true,incomeStrict:true,exchangeStrict:true,
-};
+var fileInput=document.getElementById('fileInput');
+var fileNameEl=document.getElementById('fileName');
+var textareaEl=document.getElementById('inputText');
 
-// 账号状态加权
-const STATUS_WEIGHT = {
-normal:{name:"正常",multiplier:0},
-observe:{name:"观察期",multiplier:1},
-risk:{name:"高危期",multiplier:1.5},
-recover:{name:"恢复期",multiplier:2},
-};
+fileInput.addEventListener('change',function(e){
+var f=e.target.files[0];if(f) handleFile(f);
+});
 
-function doAudit(){
-const text = document.getElementById('inputText').value.trim();
-if(!text){alert('请先粘贴话术内容');return;}
+function handleFile(file){
+var n=file.name.toLowerCase(),ext='';
+if(n.indexOf('.docx')>-1||n.indexOf('.doc')>-1) ext='docx';
+else if(n.indexOf('.pdf')>-1) ext='pdf';
+else if(n.indexOf('.txt')>-1||n.indexOf('.text')>-1) ext='txt';
+if(!ext){alert('⚠️ 不支持的格式，仅支持 .txt/.docx/.pdf');return;}
+fileNameEl.textContent='正在读取: '+file.name+'...';
+if(ext==='txt') readTxt(file);
+else if(ext==='docx') readDocx(file);
+else if(ext==='pdf') readPdf(file);
+}
 
-const line = document.getElementById('businessLine').value;
-const status = document.getElementById('accountStatus').value;
+function readTxt(file){
+var r=new FileReader();
+r.onload=function(e){textareaEl.value=e.target.result;fileNameEl.textContent='已加载: '+file.name;};
+r.onerror=function(){alert('❌ 读取失败');fileNameEl.textContent='';};
+r.readAsText(file,'UTF-8');
+}
+
+function readDocx(file){
+var r=new FileReader();
+r.onload=function(e){
+try{mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){textareaEl.value=res.value||'';fileNameEl.textContent='已加载: '+file.name;}).catch(function(err){alert('❌ DOCX解析失败:'+err.message);fileNameEl.textContent='';});}catch(err){alert('❌ DOCX读取异常');fileNameEl.textContent='';}};
+r.onerror=function(){alert('❌ 读取失败');fileNameEl.textContent='';};
+r.readAsArrayBuffer(file);
+}
+
+function readPdf(file){
+var r=new FileReader();
+r.onload=function(e){
+try{
+if(typeof pdfjsLib!=='undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+pdfjsLib.getDocument({data:e.target.result}).promise.then(function(pdf){
+var ps=[];
+for(var i=1;i<=pdf.numPages;i++) ps.push(pdf.getPage(i).then(function(p){return p.getTextContent().then(function(c){var t='';for(var j=0;j<c.items.length;j++)t+=c.items[j].str+' ';return t;})}));
+Promise.all(ps).then(function(ts){textareaEl.value=ts.join('\n\n').trim();fileNameEl.textContent='已加载: '+file.name+' ('+pdf.numPages+')';});
+}).catch(function(err){alert('❌ PDF解析失败:'+err.message);fileNameEl.textContent='';});
+}catch(err){alert('❌ PDF库加载异常');fileNameEl.textContent='';}};
+r.onerror=function(){alert('❌ 读取失败');};
+r.readAsArrayBuffer(file);
+}
+
+textareaEl.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('drop-zone-active');});
+textareaEl.addEventListener('dragleave',function(e){e.preventDefault();this.classList.remove('drop-zone-active');});
+textareaEl.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('drop-zone-active');var f=e.dataTransfer.files[0];if(f) handleFile(f);});
+
+document.getElementById('btnAudit').addEventListener('click',function(){
+var text=textareaEl.value.trim();
+if(!text){alert('⚠️ 请先输入话术或上传文档');return;}
 
 document.getElementById('emptyState').style.display='none';
 document.getElementById('loadingState').style.display='block';
 document.getElementById('resultContent').style.display='none';
 
-setTimeout(()=>{
-const result = auditText(text, line, status);
-renderResult(result);
+setTimeout(function(){
+try{
+var result=runAudit(text,document.getElementById('businessLine').value,document.getElementById('accountStatus').value);
+showResult(result,text);
 document.getElementById('loadingState').style.display='none';
 document.getElementById('resultContent').style.display='block';
-},300);
+}catch(err){
+document.getElementById('loadingState').style.display='none';
+document.getElementById('emptyState').style.display='block';
+document.getElementById('emptyState').innerHTML='<p style="color:red">❌ 审核出错:'+err.message+'</p>';
 }
-
-function auditText(text, businessLine, accountStatus){
-let violations = [];
-let fixedText = text;
-const config = LINE_CONFIG[businessLine];
-const statusInfo = STATUS_WEIGHT[accountStatus];
-
-// 1. 关键词精确+模糊扫描
-const allRules = [...RULES.brand,...RULES.income,...RULES.incomeHidden,
-...RULES.promise,...RULES.recruit,...RULES.exchange,...RULES.extreme,...RULES.lowThreshold];
-
-if(businessLine === 'ip-ad'){
-allRules.push(...RULES.ipAdRisk);
-}
-
-for(const ruleGroup of allRules){
-for(const rule of ruleGroup.w){
-// 精确匹配
-if(text.includes(rule.w)){
-let level = rule.r;
-// 账号状态加权
-if(statusInfo.multiplier >= 1 && (level === '中危' || level === '高危')){
-level = level === '中危' ? '高危' : '红线';
-} else if(statusInfo.multiplier >= 2 && level !== '红线'){
-level = '红线';
-}
-
-violations.push({
-type: level,
-category: rule.l,
-original: rule.w,
-fix: rule.fix,
-ruleType: ruleGroup.l || '关键词'
+},200);
 });
+
+function runAudit(text,businessLine,accountStatus){
+var violations=[],sw=STATUS_WEIGHT[accountStatus],sm=sw?sw.m:0;
+var rks=['brand','income','incomeHidden','promise','recruit','exchange','extreme','lowThreshold'];
+for(var rk=0;rk<rks.length;rk++){
+var cat=RULES[rks[rk]];if(!cat)continue;
+for(var i=0;i<cat.length;i++){
+var rule=cat[i],words=rule.w;if(!words)continue;
+for(var j=0;j<words.length;j++){var w=words[j];if(!w)continue;
+if(text.indexOf(w)>-1){
+var lvl=rule.r;
+if(sm>=1&&(lvl==='中危'||lvl==='高危')) lvl=lvl==='中危'?'高危':'红线';
+else if(sm>=2&&lvl!=='红线') lvl='红线';
+violations.push({t:lvl,c:rule.l,o:w,f:rule.f});
+}}}}
+if(businessLine==='ip-ad'&&RULES.ipAdRisk){
+for(var i=0;i<RULES.ipAdRisk.length;i++){var rule=RULES.ipAdRisk[i];for(var j=0;j<rule.w.length;j++){var w=rule.w[j];if(text.indexOf(w)>-1) violations.push({t:rule.r,c:rule.l,o:w,f:rule.f});}}}
+
+var chainHits=[];
+for(var ci=0;ci<CHAINS.length;ci++){
+var ch=CHAINS[ci],hc=findChains(text,ch.pattern);
+if(hc.n>=3){var cl=hc.n>=5?'红线':'高危';if(sm>=2) cl='红线';
+chainHits.push({id:ch.id,name:ch.name,d:ch.desc||ch.name,n:hc.n,s:hc.s,m:hc.m,rl:cl});}}
+
+var combos=findCombos(text,accountStatus);
+var rc=0,yc=0,mc=0,lc=0;
+for(var si=0;si<violations.length;si++){var vt=violations[si].t;if(vt==='红线')rc++;else if(vt==='高危')yc++;else if(vt==='中危')mc++;else lc++;}
+var overall='🟢 低风险';
+if(rc>0) overall='🔴 高风险（有硬性违规）';
+else if(yc>0||mc>0) overall='🟡 中风险（有软违规）';
+
+return{v:violations,ch:chainHits,co:combos,st:{r:rc,y:yc,m:mc,l:lc},ov:overall};
 }
-// 模糊匹配变体
-const variants = getVariants(rule.w);
-for(const v of variants){
-if(v && v !== rule.w && text.includes(v)){
-// 只在还没命中时添加（避免重复）
-if(!violations.find(x => x.original === rule.w)){
-let level = rule.r;
-if(statusInfo.multiplier >= 1.5) level = '红线';
-else if(statusInfo.multiplier >= 1) level = level === '中危' ? '高危' : level;
-violations.push({type:level, category: rule.l+'(变体)', original: v, fix: rule.fix, ruleType:'变体检测'});
+
+function findChains(text,pattern){
+var h={n:0,s:[],m:[]},sents=text.split(/[。！？\n]+/);
+for(var pi=0;pi<pattern.length;pi++){var kw=pattern[pi];
+for(var si=0;si<sents.length;si++){var s=sents[si].trim();if(s.length>0&&s.indexOf(kw)>-1){h.n++;h.s.push(s.length>50?s.substring(0,50)+'...':s);h.m.push(kw);break;}}}
+return h;
 }
+
+function findCombos(text,status){
+var cb=[];
+var lp=/1角|1元|0元|免费|体验|见礼/.test(text);
+var ih=/赚钱|收入|变化|创收|塞满|接口|加加/.test(text);
+var pl=/加加助教|加微|扣已|私信/.test(text);
+if(lp&&ih&&pl) cb.push({nm:'低价+收益+私域引流',lv:'红线',ds:'三要素成完整诱导链'});
+if(status==='recover'&&ih) cb.push({nm:'恢复期+收益话术',lv:'红线',ds:'恢复期零容忍收益暗示'});
+return cb;
+}
+
+function showResult(r,originalText){
+var bd=document.getElementById('overallBadge');
+bd.textContent=r.ov.split('（')[0];
+bd.className='badge '+((r.ov.indexOf('高')>-1)?'badge-red':(r.ov.indexOf('中')>-1)?'badge-yellow':'badge-green');
+document.getElementById('statRed').textContent=r.st.r;
+document.getElementById('statYellow').textContent=r.st.y;
+document.getElementById('statMid').textContent=r.st.m;
+document.getElementById('statLow').textContent=r.st.l;
+document.getElementById('tabVCount').textContent=r.v.length;
+document.getElementById('tabCCount').textContent=r.ch.length;
+
+var vl=document.getElementById('violationList');
+if(r.v.length===0){
+vl.innerHTML='<div style="text-align:center;padding:30px;background:#f0fdf4;border-radius:8px"><p style="color:green">✅ 未发现违规</p></div>';
+}else{
+var ord={'红线':0,'高危':1,'中危':2,'低危':3};
+var sv=r.v.slice(0).sort(function(a,b){return(ord[a.t]||9)-(ord[b.t]||9);});
+var h='';
+for(var i=0;i<sv.length;i++){
+var v=sv[i],cls=v.t==='红线'?'violation-red':v.t==='高危'?'violation-yellow':'violation-green';
+h+='<div class="'+cls+'"><span class="v-label">'+v.t+' · '+v.c+'</span><span class="v-text">"'+v.o+'"</span><span class="v-fix">→ '+(v.f||'建议删除')+'</span></div>';}
+vl.innerHTML=h;
+}
+
+var cl=document.getElementById('chainList');
+if(r.ch.length===0) cl.innerHTML='<div style="text-align:center;padding:30px"><p style="color:green">✅ 未触发高风险链路</p></div>';
+else{
+var ch='';
+for(var ci=0;ci<r.ch.length;ci++){var c=r.ch[ci],cc=c.rl==='红线'?'chain-warning':'';
+ch+='<div class="'+cc+'"><h4 style="color:#b45309;font-size:14px">⚠️ '+c.name+' ('+c.rl+')</h4><p style="font-size:13px;color:#78350f">触发句子:'+ (c.s.slice(0,3).join(' → ')||'等'+c.n+'处')+'</p><p style="font-size:13px;color:#78350f">命中关键词:'+c.m.join('、')+'</p></div>';}
+cl.innerHTML=ch;
+}
+
+if(r.co&&r.co.length>0){
+var cohtml='<div class="chain-warning" style="border-color:red;background:#fef2f2"><h4 style="color:red">🚨 组合风险警告</h4>';
+for(var k=0;k<r.co.length;k++) cohtml+='<p><b>'+r.co[k].nm+'</b>('+r.co[k].lv+'):'+r.co[k].ds+'</p>';
+cohtml+='</div>';
+cl.innerHTML+=cohtml;
+}
+
+renderAnnotatedText(originalText,r.v);
+}
+
+function renderAnnotatedText(text,violations){
+var container=document.getElementById('fixedText');
+
+if(violations.length===0){
+container.innerHTML='<p style="color:#16a34a;text-align:center;padding:20px">✅ 全文无违规标注</p>';
+return;
+}
+
+// 去重：同一个词只标一次（取最高危险级别）
+var processed={};
+var uniqueViolations=[];
+for(var ui=0;ui<violations.length;ui++){
+var vo=violations[ui].o;
+if(!processed[vo]){
+processed[vo]=true;
+var bestLvl=violations[ui].t;
+var bestFix=violations[ui].f;
+for(var uj=ui+1;uj<violations.length;uj++){
+if(violations[uj].o===vo){
+var ord={'红线':0,'高危':1,'中危':2,'低危':3};
+if((ord[violations[uj].t]||9)<(ord[bestLvl]||9)){
+bestLvl=violations[uj].t;
+bestFix=violations[uj].f;
+}
+}
+}
+uniqueViolations.push({o:vo,t:bestLvl,f:bestFix});
 }}
-}}
 
-// 2. 语义链路检测
-let chainHits = [];
-for(const chain of CHAINS){
-const hits = findChainMatches(text, chain.pattern);
-if(hits.count >= 3){
-let level = hits.count >= 5 ? '红线' : '高危';
-// 恢复期+完整链路=红线
-if(statusInfo.multiplier >= 2 && hits.count >= 3) level = '红线';
-chainHits.push({...chain, ...hits, riskLevel: level});
-}
-}
+// 按长度降序排列，避免短词覆盖长词的一部分
+uniqueViolations.sort(function(a,b){return b.o.length-a.o.length});
 
-// 3. 组合风险检测
-const comboHits = detectCombinations(text, violations);
+// 保留原文结构，对违规词做（颜色删除线）→ 修改建议绿色 格式
+var html=escapeHtml(text);
 
-// 4. 应用修改
-for(const v of violations){
-if(v.fix){
-fixedText = fixedText.replaceAll(v.original, `~~${v.original}~~**${v.fix}**`);
-}
-}
+for(var vi=0;vi<uniqueViolations.length;vi++){
+var v=uniqueViolations[vi];
+var cls='';
+if(v.t==='红线') cls='hl-red';
+else if(v.t==='高危') cls='hl-yellow';
+else if(v.t==='中危') cls='hl-mid';
+else cls='hl-low';
 
-// 5. 统计
-const redCount = violations.filter(x=>x.type==='红线').length;
-const yellowCount = violations.filter(x=>x.type==='高危').length;
-const midCount = violations.filter(x=>x.type==='中危').length;
-const lowCount = violations.filter(x=>x.type==='低危').length;
+var escapedWord=escapeHtml(v.o);
+var fixText=v.f?escapeHtml(v.f):'建议删除';
 
-// 判定总等级
-let overall = '🟢 低风险';
-if(redCount > 0) overall = '🔴 高风险（有硬性违规）';
-else if(yellowCount > 0 || midCount > 0) overall = '🟡 中风险（有软性违规）';
+// 格式：（违规词 颜色删除线）→ 修改建议绿色
+var replacement='<span class="violation-block">(<span class="'+cls+'" data-tip="建议改为: '+fixText+'">'+escapedWord+'</span><span class="arrow">→</span><span class="fix-text">'+fixText+'</span>)</span>';
 
-return {violations, chainHits, comboHits, fixedText, stats:{red:redCount,yellow:yellowCount,mid:midCount,low:lowCount}, overall, businessLine, accountStatus};
+var regexStr=escapedWord.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+var regex=new RegExp(regexStr,'g');
+html=html.replace(regex,replacement);
 }
 
-function findChainMatches(text, pattern){
-let hits = {count:0, segments:[], matchedWords:[]};
-const sentences = text.split(/[。！？\n]+/).filter(s=>s.trim().length > 0);
-for(const keyword of pattern){
-for(const s of sentences){
-if(s.includes(keyword)){
-hits.count++;
-hits.segments.push(s.substring(0, 50) + (s.length > 50 ? '...' : ''));
-hits.matchedWords.push(keyword);
-break;
-}
-}
-return hits;
+container.innerHTML=html;
 }
 
-function detectCombinations(text, violations){
-let combos = [];
-// 组合1: 低价+收益+私承
-const hasLowPrice = /(1米|1元|0元|免费|体验价|福利|见面礼)/.test(text);
-const hasIncomeHint = violations.some(v=>['incomeHidden','income','ipAdRisk'].some(c=>RULES[c] && RULES[c].some(r=>r.w.some(w=>text.includes(w)))));
-const hasPrivateLead = /(加助教|加微信|扣已加|私聊|扫码|二某码)/.test(text);
-if(hasLowPrice && hasIncomeHint && hasPrivateLead){
-combos.push({type:'致命组合',name:'低价+收益暗示+私域承接',desc:'三者构成完整诱导证据链',level:'红线'});
-}
-// 组合2: 恢复期+收益
-if(document.getElementById('accountStatus').value === 'recover' && hasIncomeHint){
-combos.push({type:'致命组合',name:'恢复期账号+收益表达',desc:'恢复期零容忍，任何收益表达升级为红线',level:'红线'});
-}
-return combos;
+function escapeHtml(str){
+var d=document.createElement('div');d.appendChild(document.createTextNode(str));return d.innerHTML;
 }
 
-function getVariants(word){
-const map = {
-'喜马拉雅':['喜M','喜m','XM'],'加微信':['加微','加V','加v','私聊我'],
-'赚钱':['搞钱','搞米','挣Q'],'接单':['接活','接项目','录制任务'],
-'官方':['官fang'],'二维码':['二某码','erwei'],
-};
-for(const [k,v] of Object.entries(map)){ if(k===word || k.includes(word)) return v;}
-return [];
-}
-
-function renderResult(r){
-// 总判定
-const badge = document.getElementById('overallBadge');
-badge.textContent = r.overall.split(' ')[0];
-badge.className = 'badge ' + (r.overall.includes('🔴') ? 'badge-red' : r.overall.includes('🟡') ? 'badge-yellow' : 'badge-green');
-
-// 统计数字
-document.getElementById('statRed').textContent = r.stats.red;
-document.getElementById('statYellow').textContent = r.stats.yellow;
-document.getElementById('statMid').textContent = r.stats.mid;
-document.getElementById('statLow').textContent = r.stats.low;
-
-// Tab计数
-document.getElementById('tabVCount').textContent = r.violations.length;
-document.getElementById('tabCCount').textContent = r.chainHits.length;
-
-// 违规列表
-const vList = document.getElementById('violationList');
-if(r.violations.length === 0){
-vList.innerHTML = '<div class="empty-state" style="background:#f0fdf4;border-radius:8px"><p style="color:#16a34a">✅ 未发现明显违规</p><p style="font-size:12px;color:#9ca3af;margin-top:4px">建议仍以人工复核确认</p></div>';
-} else{
-// 按严重度排序: 红线 > 高危 > 中危 > 低危
-const order = {'红线':0,'高危':1,'中危':2,'低危':3};
-const sorted = [...r.violations].sort((a,b)=>(order[a.type]||9)-(order[b.type]||9));
-vList.innerHTML = sorted.map((v,i)=>{
-const cls = v.type==='红线'?'violation-red':v.type==='高危'?'violation-yellow':'violation-green';
-return `<div class="${cls}">
-<span class="v-label">${v.type} · ${v.category}</span>
-<span class="v-text">"${v.original}"</span>
-<span class="v-fix">✅ ${v.fix}</span>
-</div>`;
-}).join('');
-}
-
-// 链路检测
-const cList = document.getElementById('chainList');
-if(r.chainHits.length === 0){
-cList.innerHTML = '<div class="empty-state"><p style="color:#16a34a">✅ 未检测到高风险语义链路</p></div>';
-} else{
-cList.innerHTML = r.chainHits.map(c=>{
-const cls = c.riskLevel==='红线'?'chain-warning' : '';
-return `<div class="${cls}">
-<h4>⚠️ ${c.name} (${c.riskLevel})</h4>
-<p><b>链路逻辑：</b>${c.desc}</p>
-<p><b>触发片段：</b>${c.segments.slice(0,3).join(' → ')||'等${c.count}处命中'}</p>
-<p><b>命中关键词：</b>${c.matchedWords.join('、')}</p>
-<p><b>建议：</b>打断该语义链条，将其中1-2个关键词替换为安全表达</p>
-</div>`;
-}).join('');
-}
-
-// 组合风险
-if(r.comboHits.length > 0){
-cList.innerHTML += '<div class="chain-warning" style="border-color:#ef4444;background:#fef2f2"><h4 style="color:#dc2626">🚨 组合风险警告</h4>' +
-r.comboHits.map(c=>`<p><b>${c.name}</b>(${c.level})：${c.desc}</p>`).join('') + '</div>';
-}
-
-// 修改后全文
-document.getElementById('fixedText').textContent = r.fixedText;
-}
-
-function switchTab(tabName, el){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-el.classList.add('active');
-document.getElementById('tab-'+tabName).classList.add('active');
+function switchTab(name,el){
+var ts=document.querySelectorAll('.tab'),cs=document.querySelectorAll('.tab-content');
+for(var i=0;i<ts.length;i++) ts[i].className='tab';
+for(var j=0;j<cs.length;j++) cs[j].className='tab-content';
+el.className='tab active';document.getElementById('tab-'+name).className='tab-content active';
 }
 
 function clearAll(){
-document.getElementById('inputText').value='';
-document.getElementById('resultPanel').innerHTML = `
-<div id="emptyState" class="empty-state"><p>📋 粘贴话术后点击"开始审核"</p></div>
-<div id="loadingState" class="loading" style="display:none">正在审核中</div>
-<div id="resultContent" style="display:none"></div>`;
+textareaEl.value='';fileNameEl.textContent='';fileInput.value='';
+document.getElementById('emptyState').style.display='block';
+document.getElementById('loadingState').style.display='none';
+document.getElementById('resultContent').style.display='none';
 }
 
-function copyFixed(){
-const text = document.getElementById('fixedText').textContent;
-navigator.clipboard.writeText(text).then(()=>alert('✅ 已复制到剪贴板')).catch(()=>{});
+function copyTxt(){
+var ct=document.getElementById('fixedText'),text=ct.innerText||ct.textContent;
+if(navigator.clipboard) navigator.clipboard.writeText(text).then(function(){alert('✅ 已复制到剪贴板');});
+else{var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ 已复制到剪贴板');}
 }
+
+document.getElementById('btnClear').addEventListener('click',clearAll);
+document.getElementById('btnCopy').addEventListener('click',copyTxt);
+var tabs=document.querySelectorAll('.tab[data-tab]');
+for(var ti=0;ti<tabs.length;ti++) tabs[ti].addEventListener('click',function(){switchTab(this.getAttribute('data-tab'),this);});
 </script>
 </body>
 </html>

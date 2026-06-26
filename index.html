@@ -299,7 +299,15 @@ textareaEl.addEventListener('dragleave',function(e){e.preventDefault();this.clas
 textareaEl.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('drop-zone-active');var f=e.dataTransfer.files[0];if(f) handleFile(f);});
 
 // DEBUG: 显示规则数据
-document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">[DEBUG] 口袋fix='+RULES.incomeHidden[1].f+' | 见面礼fix='+RULES.exchange[2].f+' | 名额fix='+RULES.promise[4].f+'</p>';
+try{
+var dbg='[DEBUG] RULES存在:'+(typeof RULES)+' | incomeHidden长度:'+RULES.incomeHidden.length;
+dbg+=' | [0]fix='+(RULES.incomeHidden[0]?RULES.incomeHidden[0].f:'NO_OBJ');
+dbg+=' | [1]fix='+(RULES.incomeHidden[1]?RULES.incomeHidden[1].f:'NO_OBJ');
+dbg+=' | keys[0]='+(Object.keys(RULES.incomeHidden[1]).join(','));
+document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">'+dbg+'</p>';
+}catch(e){
+document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">[DEBUG ERROR] '+e.message+'</p>';
+}
 
 document.getElementById('btnAudit').addEventListener('click',function(){
 var text=textareaEl.value.trim();

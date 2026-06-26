@@ -90,7 +90,7 @@ box-shadow:0 4px 12px rgba(0,0,0,.15)
 <div class="container">
 <header>
 <h1>🛡️ 视频号直播AI合规审核系统</h1>
-<p>v1.5.2 · 标注格式优化 · 删除线标注 + 绿色修改建议 + 全部补全替换文案</p>
+<p>v1.5.3 · DEBUG测试 · 删除线标注 + 绿色修改建议</p>
 </header>
 
 <div class="main-grid">
@@ -297,6 +297,9 @@ r.readAsArrayBuffer(file);
 textareaEl.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('drop-zone-active');});
 textareaEl.addEventListener('dragleave',function(e){e.preventDefault();this.classList.remove('drop-zone-active');});
 textareaEl.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('drop-zone-active');var f=e.dataTransfer.files[0];if(f) handleFile(f);});
+
+// DEBUG: 显示规则数据
+document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">[DEBUG] 口袋fix='+RULES.incomeHidden[1].f+' | 见面礼fix='+RULES.exchange[2].f+' | 名额fix='+RULES.promise[4].f+'</p>';
 
 document.getElementById('btnAudit').addEventListener('click',function(){
 var text=textareaEl.value.trim();

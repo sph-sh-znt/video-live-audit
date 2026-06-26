@@ -60,12 +60,10 @@ footer{text-align:center;padding:20px;color:#9ca3af;font-size:12px;margin-top:30
 .help-section h4{color:#1d4ed8;font-size:13px;margin-bottom:8px}
 .help-section ul{padding-left:18px;font-size:13px;color:#3b82f6}
 .help-section li{margin:4px 0}
-/* 标注颜色 - 违规词（删除线） */
 .hl-red{background:#fecaca;color:#991b1b;padding:2px 5px;border-radius:3px;font-weight:600;text-decoration:line-through;cursor:help;position:relative}
 .hl-yellow{background:#fef08a;color:#854d0e;padding:2px 5px;border-radius:3px;font-weight:600;text-decoration:line-through;cursor:help;position:relative}
 .hl-mid{background:#fed7aa;color:#9a3412;padding:2px 5px;border-radius:3px;font-weight:500;text-decoration:line-through;cursor:help;position:relative}
 .hl-low{background:#bbf7d0;color:#166534;padding:2px 5px;border-radius:3px;text-decoration:line-through;cursor:help;position:relative}
-/* tooltip 悬停提示 */
 .hl-red:hover::after,.hl-yellow:hover::after,.hl-mid:hover::after,.hl-low:hover::after{
 content:attr(data-tip);
 position:absolute;bottom:120%;left:50%;transform:translateX(-50%);
@@ -73,9 +71,7 @@ background:#1f2937;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;
 white-space:nowrap;z-index:10;font-weight:normal;pointer-events:none;
 box-shadow:0 4px 12px rgba(0,0,0,.15)
 }
-/* 修改建议 */
 .fix-text{color:#059669;font-weight:500;background:#ecfdf5;padding:2px 5px;border-radius:3px;margin-left:4px}
-/* 违规+修改 整体行内块 */
 .violation-block{display:inline}
 .arrow{color:#9ca3af;margin:0 2px;font-size:12px}
 .fixed-text-area{background:#fff;padding:16px;border-radius:8px;font-size:14px;line-height:2.4;white-space:pre-wrap;word-break:break-all;border:1px solid #e4e4e7}
@@ -90,7 +86,7 @@ box-shadow:0 4px 12px rgba(0,0,0,.15)
 <div class="container">
 <header>
 <h1>🛡️ 视频号直播AI合规审核系统</h1>
-<p>v1.5.3 · DEBUG测试 · 删除线标注 + 绿色修改建议</p>
+<p>v2.0 · 删除线标注 + 绿色修改建议 · 全部修复</p>
 </header>
 
 <div class="main-grid">
@@ -134,7 +130,7 @@ box-shadow:0 4px 12px rgba(0,0,0,.15)
 <ul>
 <li>🔴 红线 = 必须修改 · 🟡 高危 = 建议修改 · ⚠️ 中危 = 可选修改</li>
 <li>📎 支持 .txt / .docx / .pdf 文档上传和拖拽</li>
-<li>📋 标注全文模式：违规词颜色标注 + 修改建议内联显示</li>
+<li>📋 标注全文模式：（违规词删除线）→ 绿色修改建议</li>
 </ul>
 </div>
 </div>
@@ -164,7 +160,7 @@ box-shadow:0 4px 12px rgba(0,0,0,.15)
 <div id="tab-chains" class="tab-content"><div id="chainList"></div></div>
 <div id="tab-fixed" class="tab-content">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<span style="font-size:13px;color:#666">原文保留，颜色标注违规位置 · 鼠标悬停查看修改建议</span>
+<span style="font-size:13px;color:#666">原文保留 · 违规词删除线标注 → 绿色修改建议</span>
 <button class="copy-btn" id="btnCopy">📋 复制原文</button>
 </div>
 <div class="legend">
@@ -179,62 +175,65 @@ box-shadow:0 4px 12px rgba(0,0,0,.15)
 </div>
 
 <footer>
-<p>🛡️ 视频号直播AI合规审核系统 v1.5.2</p>
+<p>🛡️ 视频号直播AI合规审核系统 v2.0</p>
 <p>💬 有问题反馈给于彤/晓静 · 规则每周迭代更新</p>
 </footer>
 </div>
 
 <script>
-var RULES = {
-brand:[
-{w:["喜马拉雅","喜马","喜马官方","喜马生态"],l:"品牌违禁",r:"红线",fix:"有声行业"},
-{w:["官方直播间","官方课程","官方渠道","官方招募"],l:"品牌违禁",r:"红线",fix:"品牌直播间"}
-],
-income:[
-{w:["月入","一小时赚","日薪","时薪","年薪","创收"],l:"收益承诺",r:"红线",fix:"学完后多一个发展方向"},
-{w:["赚钱","搞钱","搞米","挣钱","变现","录书赚钱","声音变现"],l:"收益承诺",r:"红线",fix:"提升自己"},
-{w:["兼职","副业","第二职业","接单","荷包鼓鼓","赚外快","零花钱"],l:"收益承诺(投放)",r:"红线",fix:"多掌握一门技能"}
-],
-incomeHidden:[
-{w:["小果","大果","火锅","排骨","奶茶钱","奶茶自由","绿色通道","书单资源"],l:"收益暗语",r:"高危",fix:"小成果"},
-{w:["口袋","塞得越来越满","满满","获得一些额外收获","收获颇丰"],l:"收益暗语",r:"高危",fix:"收获满满"},
-{w:["回本","值回票价","一米的票价早就值回来了"],l:"投入回报暗示",r:"高危",fix:"非常值得"},
-{w:["第二选择","Plan B","第二份收入","额外一份收获"],l:"副业暗示",r:"高危",fix:"新的可能性"},
-{w:["改变未来生活质量","改变命运","改写人生","弯道超车","背靠大树好乘凉"],l:"结果承诺",r:"高危",fix:"让生活更精彩"}
-],
-ipAdRisk:[
-{w:["获取一些额外收获","提高生活质量","获得感","把阅历优势放大以实现获得感"],l:"收益暗语(IP)",r:"红线",fix:"获得更多成长"},
-{w:["告诉你接书的路径在哪里","播放量越高收获也就越高","这个行业就是普通人入局的好机会"],l:"路径暗示",r:"红线",fix:"这个行业值得深入了解"},
-{w:["升职加薪","让你的荷包更加丰满","收获的小果果买杯奶茶看个电影"],l:"收益隐喻",r:"红线",fix:"每天抽15分钟练一段旁白"},
-{w:["有声书平台和短剧平台长期合作","配音届天花板"],l:"虚假夸大",r:"高危",fix:"在行业里深耕多年"}
-],
-promise:[
-{w:["包教包会","手把手教","秒懂","三天学会","一定能","保证","肯定能"],l:"效果承诺",r:"红线",fix:"认真学习就能掌握"},
-{w:["我们帮你找","我们帮你挑","我们帮你匹配","我来帮你安排"],l:"资源承诺",r:"红线",fix:"课程里会介绍各方向"},
-{w:["你来负责教你只管认真学","只要你不挑","只要你愿意认真学"],l:"结果承诺",r:"高危",fix:"跟着老师一起学"},
-{w:["不用自己摸索","不用动脑","有嘴就行","0门槛"],l:"夸张诱导",r:"中危",fix:"零基础也可以开始"},
-{w:["原价199","原价","限时","仅限前","最后","名额","马上结束","错过就没了"],l:"虚假紧迫感",r:"中危",fix:"本期优惠力度很大"}
-],
-recruit:[
-{w:["招主播","招人","招募","岗前培训","入职","招聘"],l:"招聘引流",r:"红线",fix:"删除此句"},
-{w:["加微信","加微","加V","私聊我","扫二维码","私某信","二某码"],l:"外部引流",r:"红线/中危",fix:"按提示添加助教老师"}
-],
-exchange:[
-{w:["报名就送声音鉴定","扣已加安排鉴定","打已加领福利","回来扣已加"],l:"利益诱导",r:"红线",fix:"课程内含专业测评"},
-{w:["没加上助教是不行的"],l:"胁迫诱导",r:"中危",fix:"加上助教服务更好"},
-{w:["见面礼","免费送","1元抢"],l:"低价诱导",r:"中危",fix:"本期专属福利"}
-],
-extreme:[
-{w:["最好","第一","唯一","顶级","极致","绝对","百分百","100%","无敌","完美","史上最","终极","国家级","大牌","金牌","权威","名师"],l:"极限词",r:"高危",fix:"很棒"},
-{w:["全网","全国","首家","独家"],l:"极限词(范围)",r:"中危",fix:"业内领先"}
-],
-lowThreshold:[
-{w:["在家带娃的宝妈","不上班的姐妹","有自己可以自由支配时间的朋友"],l:"人群圈定",r:"中危",fix:"想提升自己的朋友"},
-{w:["不用露脸","在家就做得到","时间灵活自由掌握","最少每天拿出20分钟"],l:"低门槛强调",r:"中危",fix:"随时随地都能练"}
-]
-};
+function R(words,label,risk,fix){
+return{w:words,l:label,r:risk,f:fix};
+}
 
-var CHAINS = [
+var RULES={};
+RULES.brand=[
+R(["喜马拉雅","喜马","喜马官方","喜马生态"],"品牌违禁","红线","有声行业"),
+R(["官方直播间","官方课程","官方渠道","官方招募"],"品牌违禁","红线","品牌直播间")
+];
+RULES.income=[
+R(["月入","一小时赚","日薪","时薪","年薪","创收"],"收益承诺","红线","学完后多一个发展方向"),
+R(["赚钱","搞钱","搞米","挣钱","变现","录书赚钱","声音变现"],"收益承诺","红线","提升自己"),
+R(["兼职","副业","第二职业","接单","荷包鼓鼓","赚外快","零花钱"],"收益承诺(投放)","红线","多掌握一门技能")
+];
+RULES.incomeHidden=[
+R(["小果","大果","火锅","排骨","奶茶钱","奶茶自由","绿色通道","书单资源"],"收益暗语","高危","小成果"),
+R(["口袋","塞得越来越满","满满","获得一些额外收获","收获颇丰"],"收益暗语","高危","收获满满"),
+R(["回本","值回票价","一米的票价早就值回来了"],"投入回报暗示","高危","非常值得"),
+R(["第二选择","Plan B","第二份收入","额外一份收获"],"副业暗示","高危","新的可能性"),
+R(["改变未来生活质量","改变命运","改写人生","弯道超车","背靠大树好乘凉"],"结果承诺","高危","让生活更精彩")
+];
+RULES.ipAdRisk=[
+R(["获取一些额外收获","提高生活质量","获得感","把阅历优势放大以实现获得感"],"收益暗语(IP)","红线","获得更多成长"),
+R(["告诉你接书的路径在哪里","播放量越高收获也就越高","这个行业就是普通人入局的好机会"],"路径暗示","红线","这个行业值得深入了解"),
+R(["升职加薪","让你的荷包更加丰满","收获的小果果买杯奶茶看个电影"],"收益隐喻","红线","每天抽15分钟练一段旁白"),
+R(["有声书平台和短剧平台长期合作","配音届天花板"],"虚假夸大","高危","在行业里深耕多年")
+];
+RULES.promise=[
+R(["包教包会","手把手教","秒懂","三天学会","一定能","保证","肯定能"],"效果承诺","红线","认真学习就能掌握"),
+R(["我们帮你找","我们帮你挑","我们帮你匹配","我来帮你安排"],"资源承诺","红线","课程里会介绍各方向"),
+R(["你来负责教你只管认真学","只要你不挑","只要你愿意认真学"],"结果承诺","高危","跟着老师一起学"),
+R(["不用自己摸索","不用动脑","有嘴就行","0门槛"],"夸张诱导","中危","零基础也可以开始"),
+R(["原价199","原价","限时","仅限前","最后","名额","马上结束","错过就没了"],"虚假紧迫感","中危","本期优惠力度很大")
+];
+RULES.recruit=[
+R(["招主播","招人","招募","岗前培训","入职","招聘"],"招聘引流","红线","删除此句"),
+R(["加微信","加微","加V","私聊我","扫二维码","私某信","二某码"],"外部引流","红线/中危","按提示添加助教老师")
+];
+RULES.exchange=[
+R(["报名就送声音鉴定","扣已加安排鉴定","打已加领福利","回来扣已加"],"利益诱导","红线","课程内含专业测评"),
+R(["没加上助教是不行的"],"胁迫诱导","中危","加上助教服务更好"),
+R(["见面礼","免费送","1元抢"],"低价诱导","中危","本期专属福利")
+];
+RULES.extreme=[
+R(["最好","第一","唯一","顶级","极致","绝对","百分百","100%","无敌","完美","史上最","终极","国家级","大牌","金牌","权威","名师"],"极限词","高危","很棒"),
+R(["全网","全国","首家","独家"],"极限词(范围)","中危","业内领先")
+];
+RULES.lowThreshold=[
+R(["在家带娃的宝妈","不上班的姐妹","有自己可以自由支配时间的朋友"],"人群圈定","中危","想提升自己的朋友"),
+R(["不用露脸","在家就做得到","时间灵活自由掌握","最少每天拿出20分钟"],"低门槛强调","中危","随时随地都能练")
+];
+
+var CHAINS=[
 {id:"C01",name:"收益诱导链",pattern:["学","创造价值","回报","改善","生活","收获","获得"]},
 {id:"C02",name:"机会诱导链",pattern:["学","角色","录制","机会","发展","实践"]},
 {id:"C03",name:"优势改变链",pattern:["学","优势","改变","未来","弯道超车"]},
@@ -242,40 +241,40 @@ var CHAINS = [
 {id:"C05",name:"低门槛结果链",pattern:["宝妈","在家","不用","自由","灵活","时间","露脸"]}
 ];
 
-var STATUS_WEIGHT = {normal:{m:0},observe:{m:1},risk:{m:1.5},recover:{m:2}};
+var STATUS_WEIGHT={normal:{m:0},observe:{m:1},risk:{m:1.5},recover:{m:2}};
 
-var fileInput=document.getElementById('fileInput');
-var fileNameEl=document.getElementById('fileName');
-var textareaEl=document.getElementById('inputText');
+var fileInput=document.getElementById("fileInput");
+var fileNameEl=document.getElementById("fileName");
+var textareaEl=document.getElementById("inputText");
 
-fileInput.addEventListener('change',function(e){
+fileInput.addEventListener("change",function(e){
 var f=e.target.files[0];if(f) handleFile(f);
 });
 
 function handleFile(file){
-var n=file.name.toLowerCase(),ext='';
-if(n.indexOf('.docx')>-1||n.indexOf('.doc')>-1) ext='docx';
-else if(n.indexOf('.pdf')>-1) ext='pdf';
-else if(n.indexOf('.txt')>-1||n.indexOf('.text')>-1) ext='txt';
-if(!ext){alert('⚠️ 不支持的格式，仅支持 .txt/.docx/.pdf');return;}
-fileNameEl.textContent='正在读取: '+file.name+'...';
-if(ext==='txt') readTxt(file);
-else if(ext==='docx') readDocx(file);
-else if(ext==='pdf') readPdf(file);
+var n=file.name.toLowerCase(),ext="";
+if(n.indexOf(".docx")>-1||n.indexOf(".doc")>-1) ext="docx";
+else if(n.indexOf(".pdf")>-1) ext="pdf";
+else if(n.indexOf(".txt")>-1||n.indexOf(".text")>-1) ext="txt";
+if(!ext){alert("⚠️ 不支持的格式，仅支持 .txt/.docx/.pdf");return;}
+fileNameEl.textContent="正在读取: "+file.name+"...";
+if(ext==="txt") readTxt(file);
+else if(ext==="docx") readDocx(file);
+else if(ext==="pdf") readPdf(file);
 }
 
 function readTxt(file){
 var r=new FileReader();
-r.onload=function(e){textareaEl.value=e.target.result;fileNameEl.textContent='已加载: '+file.name;};
-r.onerror=function(){alert('❌ 读取失败');fileNameEl.textContent='';};
-r.readAsText(file,'UTF-8');
+r.onload=function(e){textareaEl.value=e.target.result;fileNameEl.textContent="已加载: "+file.name;};
+r.onerror=function(){alert("❌ 读取失败");fileNameEl.textContent="";};
+r.readAsText(file,"UTF-8");
 }
 
 function readDocx(file){
 var r=new FileReader();
 r.onload=function(e){
-try{mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){textareaEl.value=res.value||'';fileNameEl.textContent='已加载: '+file.name;}).catch(function(err){alert('❌ DOCX解析失败:'+err.message);fileNameEl.textContent='';});}catch(err){alert('❌ DOCX读取异常');fileNameEl.textContent='';}};
-r.onerror=function(){alert('❌ 读取失败');fileNameEl.textContent='';};
+try{mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(res){textareaEl.value=res.value||"";fileNameEl.textContent="已加载: "+file.name;}).catch(function(err){alert("❌ DOCX解析失败:"+err.message);fileNameEl.textContent="";});}catch(err){alert("❌ DOCX读取异常");fileNameEl.textContent="";}};
+r.onerror=function(){alert("❌ 读取失败");fileNameEl.textContent="";};
 r.readAsArrayBuffer(file);
 }
 
@@ -283,47 +282,46 @@ function readPdf(file){
 var r=new FileReader();
 r.onload=function(e){
 try{
-if(typeof pdfjsLib!=='undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+if(typeof pdfjsLib!=="undefined") pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 pdfjsLib.getDocument({data:e.target.result}).promise.then(function(pdf){
 var ps=[];
-for(var i=1;i<=pdf.numPages;i++) ps.push(pdf.getPage(i).then(function(p){return p.getTextContent().then(function(c){var t='';for(var j=0;j<c.items.length;j++)t+=c.items[j].str+' ';return t;})}));
-Promise.all(ps).then(function(ts){textareaEl.value=ts.join('\n\n').trim();fileNameEl.textContent='已加载: '+file.name+' ('+pdf.numPages+')';});
-}).catch(function(err){alert('❌ PDF解析失败:'+err.message);fileNameEl.textContent='';});
-}catch(err){alert('❌ PDF库加载异常');fileNameEl.textContent='';}};
-r.onerror=function(){alert('❌ 读取失败');};
+for(var i=1;i<=pdf.numPages;i++) ps.push(pdf.getPage(i).then(function(p){return p.getTextContent().then(function(c){var t="";for(var j=0;j<c.items.length;j++)t+=c.items[j].str+" ";return t;})}));
+Promise.all(ps).then(function(ts){textareaEl.value=ts.join("\n\n").trim();fileNameEl.textContent="已加载: "+file.name+" ("+pdf.numPages+")";});
+}).catch(function(err){alert("❌ PDF解析失败:"+err.message);fileNameEl.textContent="";});
+}catch(err){alert("❌ PDF库加载异常");fileNameEl.textContent="";}};
+r.onerror=function(){alert("❌ 读取失败");};
 r.readAsArrayBuffer(file);
 }
 
-textareaEl.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('drop-zone-active');});
-textareaEl.addEventListener('dragleave',function(e){e.preventDefault();this.classList.remove('drop-zone-active');});
-textareaEl.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('drop-zone-active');var f=e.dataTransfer.files[0];if(f) handleFile(f);});
+textareaEl.addEventListener("dragover",function(e){e.preventDefault();this.classList.add("drop-zone-active");});
+textareaEl.addEventListener("dragleave",function(e){e.preventDefault();this.classList.remove("drop-zone-active");});
+textareaEl.addEventListener("drop",function(e){e.preventDefault();this.classList.remove("drop-zone-active");var f=e.dataTransfer.files[0];if(f) handleFile(f);});
 
-
-document.getElementById('btnAudit').addEventListener('click',function(){
+document.getElementById("btnAudit").addEventListener("click",function(){
 var text=textareaEl.value.trim();
-if(!text){alert('⚠️ 请先输入话术或上传文档');return;}
+if(!text){alert("⚠️ 请先输入话术或上传文档");return;}
 
-document.getElementById('emptyState').style.display='none';
-document.getElementById('loadingState').style.display='block';
-document.getElementById('resultContent').style.display='none';
+document.getElementById("emptyState").style.display="none";
+document.getElementById("loadingState").style.display="block";
+document.getElementById("resultContent").style.display="none";
 
 setTimeout(function(){
 try{
-var result=runAudit(text,document.getElementById('businessLine').value,document.getElementById('accountStatus').value);
+var result=runAudit(text,document.getElementById("businessLine").value,document.getElementById("accountStatus").value);
 showResult(result,text);
-document.getElementById('loadingState').style.display='none';
-document.getElementById('resultContent').style.display='block';
+document.getElementById("loadingState").style.display="none";
+document.getElementById("resultContent").style.display="block";
 }catch(err){
-document.getElementById('loadingState').style.display='none';
-document.getElementById('emptyState').style.display='block';
-document.getElementById('emptyState').innerHTML='<p style="color:red">❌ 审核出错:'+err.message+'</p>';
+document.getElementById("loadingState").style.display="none";
+document.getElementById("emptyState").style.display="block";
+document.getElementById("emptyState").innerHTML='<p style="color:red">❌ 审核出错:'+err.message+"</p>";
 }
 },200);
 });
 
 function runAudit(text,businessLine,accountStatus){
 var violations=[],sw=STATUS_WEIGHT[accountStatus],sm=sw?sw.m:0;
-var rks=['brand','income','incomeHidden','promise','recruit','exchange','extreme','lowThreshold'];
+var rks=["brand","income","incomeHidden","promise","recruit","exchange","extreme","lowThreshold"];
 for(var rk=0;rk<rks.length;rk++){
 var cat=RULES[rks[rk]];if(!cat)continue;
 for(var i=0;i<cat.length;i++){
@@ -331,25 +329,25 @@ var rule=cat[i],words=rule.w;if(!words)continue;
 for(var j=0;j<words.length;j++){var w=words[j];if(!w)continue;
 if(text.indexOf(w)>-1){
 var lvl=rule.r;
-if(sm>=1&&(lvl==='中危'||lvl==='高危')) lvl=lvl==='中危'?'高危':'红线';
-else if(sm>=2&&lvl!=='红线') lvl='红线';
+if(sm>=1&&(lvl==="中危"||lvl==="高危")) lvl=lvl==="中危"?"高危":"红线";
+else if(sm>=2&&lvl!=="红线") lvl="红线";
 violations.push({t:lvl,c:rule.l,o:w,f:rule.f});
 }}}}
-if(businessLine==='ip-ad'&&RULES.ipAdRisk){
+if(businessLine==="ip-ad"&&RULES.ipAdRisk){
 for(var i=0;i<RULES.ipAdRisk.length;i++){var rule=RULES.ipAdRisk[i];for(var j=0;j<rule.w.length;j++){var w=rule.w[j];if(text.indexOf(w)>-1) violations.push({t:rule.r,c:rule.l,o:w,f:rule.f});}}}
 
 var chainHits=[];
 for(var ci=0;ci<CHAINS.length;ci++){
 var ch=CHAINS[ci],hc=findChains(text,ch.pattern);
-if(hc.n>=3){var cl=hc.n>=5?'红线':'高危';if(sm>=2) cl='红线';
+if(hc.n>=3){var cl=hc.n>=5?"红线":"高危";if(sm>=2) cl="红线";
 chainHits.push({id:ch.id,name:ch.name,d:ch.desc||ch.name,n:hc.n,s:hc.s,m:hc.m,rl:cl});}}
 
 var combos=findCombos(text,accountStatus);
 var rc=0,yc=0,mc=0,lc=0;
-for(var si=0;si<violations.length;si++){var vt=violations[si].t;if(vt==='红线')rc++;else if(vt==='高危')yc++;else if(vt==='中危')mc++;else lc++;}
-var overall='🟢 低风险';
-if(rc>0) overall='🔴 高风险（有硬性违规）';
-else if(yc>0||mc>0) overall='🟡 中风险（有软违规）';
+for(var si=0;si<violations.length;si++){var vt=violations[si].t;if(vt==="红线")rc++;else if(vt==="高危")yc++;else if(vt==="中危")mc++;else lc++;}
+var overall="🟢 低风险";
+if(rc>0) overall="🔴 高风险（有硬性违规）";
+else if(yc>0||mc>0) overall="🟡 中风险（有软违规）";
 
 return{v:violations,ch:chainHits,co:combos,st:{r:rc,y:yc,m:mc,l:lc},ov:overall};
 }
@@ -357,7 +355,7 @@ return{v:violations,ch:chainHits,co:combos,st:{r:rc,y:yc,m:mc,l:lc},ov:overall};
 function findChains(text,pattern){
 var h={n:0,s:[],m:[]},sents=text.split(/[。！？\n]+/);
 for(var pi=0;pi<pattern.length;pi++){var kw=pattern[pi];
-for(var si=0;si<sents.length;si++){var s=sents[si].trim();if(s.length>0&&s.indexOf(kw)>-1){h.n++;h.s.push(s.length>50?s.substring(0,50)+'...':s);h.m.push(kw);break;}}}
+for(var si=0;si<sents.length;si++){var s=sents[si].trim();if(s.length>0&&s.indexOf(kw)>-1){h.n++;h.s.push(s.length>50?s.substring(0,50)+"...":s);h.m.push(kw);break;}}}
 return h;
 }
 
@@ -366,48 +364,48 @@ var cb=[];
 var lp=/1角|1元|0元|免费|体验|见礼/.test(text);
 var ih=/赚钱|收入|变化|创收|塞满|接口|加加/.test(text);
 var pl=/加加助教|加微|扣已|私信/.test(text);
-if(lp&&ih&&pl) cb.push({nm:'低价+收益+私域引流',lv:'红线',ds:'三要素成完整诱导链'});
-if(status==='recover'&&ih) cb.push({nm:'恢复期+收益话术',lv:'红线',ds:'恢复期零容忍收益暗示'});
+if(lp&&ih&&pl) cb.push({nm:"低价+收益+私域引流",lv:"红线",ds:"三要素成完整诱导链"});
+if(status==="recover"&ih) cb.push({nm:"恢复期+收益话术",lv:"红线",ds:"恢复期零容忍收益暗示"});
 return cb;
 }
 
 function showResult(r,originalText){
-var bd=document.getElementById('overallBadge');
-bd.textContent=r.ov.split('（')[0];
-bd.className='badge '+((r.ov.indexOf('高')>-1)?'badge-red':(r.ov.indexOf('中')>-1)?'badge-yellow':'badge-green');
-document.getElementById('statRed').textContent=r.st.r;
-document.getElementById('statYellow').textContent=r.st.y;
-document.getElementById('statMid').textContent=r.st.m;
-document.getElementById('statLow').textContent=r.st.l;
-document.getElementById('tabVCount').textContent=r.v.length;
-document.getElementById('tabCCount').textContent=r.ch.length;
+var bd=document.getElementById("overallBadge");
+bd.textContent=r.ov.split("（")[0];
+bd.className="badge "+((r.ov.indexOf("高")>-1)?"badge-red":(r.ov.indexOf("中")>-1)?"badge-yellow":"badge-green");
+document.getElementById("statRed").textContent=r.st.r;
+document.getElementById("statYellow").textContent=r.st.y;
+document.getElementById("statMid").textContent=r.st.m;
+document.getElementById("statLow").textContent=r.st.l;
+document.getElementById("tabVCount").textContent=r.v.length;
+document.getElementById("tabCCount").textContent=r.ch.length;
 
-var vl=document.getElementById('violationList');
+var vl=document.getElementById("violationList");
 if(r.v.length===0){
 vl.innerHTML='<div style="text-align:center;padding:30px;background:#f0fdf4;border-radius:8px"><p style="color:green">✅ 未发现违规</p></div>';
 }else{
-var ord={'红线':0,'高危':1,'中危':2,'低危':3};
+var ord={"红线":0,"高危":1,"中危":2,"低危":3};
 var sv=r.v.slice(0).sort(function(a,b){return(ord[a.t]||9)-(ord[b.t]||9);});
-var h='';
+var h="";
 for(var i=0;i<sv.length;i++){
-var v=sv[i],cls=v.t==='红线'?'violation-red':v.t==='高危'?'violation-yellow':'violation-green';
-h+='<div class="'+cls+'"><span class="v-label">'+v.t+' · '+v.c+'</span><span class="v-text">"'+v.o+'"</span><span class="v-fix">→ '+(v.f||'建议删除')+'</span></div>';}
+var v=sv[i],cls=v.t==="红线"?"violation-red":v.t==="高危"?"violation-yellow":"violation-green";
+h+='<div class="'+cls+'"><span class="v-label">'+v.t+" · "+v.c+'</span><span class="v-text">"'+v.o+'"</span><span class="v-fix">→ '+(v.f||"建议删除")+'</span></div>';}
 vl.innerHTML=h;
 }
 
-var cl=document.getElementById('chainList');
+var cl=document.getElementById("chainList");
 if(r.ch.length===0) cl.innerHTML='<div style="text-align:center;padding:30px"><p style="color:green">✅ 未触发高风险链路</p></div>';
 else{
-var ch='';
-for(var ci=0;ci<r.ch.length;ci++){var c=r.ch[ci],cc=c.rl==='红线'?'chain-warning':'';
-ch+='<div class="'+cc+'"><h4 style="color:#b45309;font-size:14px">⚠️ '+c.name+' ('+c.rl+')</h4><p style="font-size:13px;color:#78350f">触发句子:'+ (c.s.slice(0,3).join(' → ')||'等'+c.n+'处')+'</p><p style="font-size:13px;color:#78350f">命中关键词:'+c.m.join('、')+'</p></div>';}
+var ch="";
+for(var ci=0;ci<r.ch.length;ci++){var c=r.ch[ci],cc=c.rl==="红线"?"chain-warning":"";
+ch+='<div class="'+cc+'"><h4 style="color:#b45309;font-size:14px">⚠️ '+c.name+" ("+c.rl+')</h4><p style="font-size:13px;color:#78350f">触发句子:'+(c.s.slice(0,3).join(" → ")||"等"+c.n+"处")+'</p><p style="font-size:13px;color:#78350f">命中关键词:'+c.m.join("、")+'</p></div>';}
 cl.innerHTML=ch;
 }
 
 if(r.co&&r.co.length>0){
 var cohtml='<div class="chain-warning" style="border-color:red;background:#fef2f2"><h4 style="color:red">🚨 组合风险警告</h4>';
-for(var k=0;k<r.co.length;k++) cohtml+='<p><b>'+r.co[k].nm+'</b>('+r.co[k].lv+'):'+r.co[k].ds+'</p>';
-cohtml+='</div>';
+for(var k=0;k<r.co.length;k++) cohtml+='<p><b>'+r.co[k].nm+"</b>("+r.co[k].lv+"):"+r.co[k].ds+"</p>";
+cohtml+="</div>";
 cl.innerHTML+=cohtml;
 }
 
@@ -415,16 +413,14 @@ renderAnnotatedText(originalText,r.v);
 }
 
 function renderAnnotatedText(text,violations){
-var container=document.getElementById('fixedText');
+var container=document.getElementById("fixedText");
 
 if(violations.length===0){
 container.innerHTML='<p style="color:#16a34a;text-align:center;padding:20px">✅ 全文无违规标注</p>';
 return;
 }
 
-// 去重：同一个词只标一次（取最高危险级别）
-var processed={};
-var uniqueViolations=[];
+var processed={},uniqueViolations=[];
 for(var ui=0;ui<violations.length;ui++){
 var vo=violations[ui].o;
 if(!processed[vo]){
@@ -433,7 +429,7 @@ var bestLvl=violations[ui].t;
 var bestFix=violations[ui].f;
 for(var uj=ui+1;uj<violations.length;uj++){
 if(violations[uj].o===vo){
-var ord={'红线':0,'高危':1,'中危':2,'低危':3};
+var ord={"红线":0,"高危":1,"中危":2,"低危":3};
 if((ord[violations[uj].t]||9)<(ord[bestLvl]||9)){
 bestLvl=violations[uj].t;
 bestFix=violations[uj].f;
@@ -443,36 +439,25 @@ bestFix=violations[uj].f;
 uniqueViolations.push({o:vo,t:bestLvl,f:bestFix});
 }}
 
-// 按长度降序排列，避免短词覆盖长词的一部分
 uniqueViolations.sort(function(a,b){return b.o.length-a.o.length});
 
-// DEBUG: show first 3 violation objects
-var dbg2='[RENDER-DEBUG] 前3条: ';
-for(var di=0;di<Math.min(3,uniqueViolations.length);di++){
-var dv=uniqueViolations[di];
-dbg2+='['+dv.o+'] f='+(dv.f||'UNDEF')+' | ';
-}
-document.getElementById('fixedText').innerHTML='<p style="color:red;font-size:12px">'+dbg2+'</p>';
-
-// 保留原文结构，对违规词做（颜色删除线）→ 修改建议绿色 格式
 var html=escapeHtml(text);
 
 for(var vi=0;vi<uniqueViolations.length;vi++){
 var v=uniqueViolations[vi];
-var cls='';
-if(v.t==='红线') cls='hl-red';
-else if(v.t==='高危') cls='hl-yellow';
-else if(v.t==='中危') cls='hl-mid';
-else cls='hl-low';
+var cls="";
+if(v.t==="红线") cls="hl-red";
+else if(v.t==="高危") cls="hl-yellow";
+else if(v.t==="中危") cls="hl-mid";
+else cls="hl-low";
 
 var escapedWord=escapeHtml(v.o);
-var fixText=v.f?escapeHtml(v.f):'建议删除';
+var fixText=v.f?escapeHtml(v.f):"建议删除";
 
-// 格式：（违规词 颜色删除线）→ 修改建议绿色
-var replacement='<span class="violation-block">(<span class="'+cls+'" data-tip="建议改为: '+fixText+'">'+escapedWord+'</span><span class="arrow">→</span><span class="fix-text">'+fixText+'</span>)</span>';
+var replacement='<span class="violation-block">(<span class="'+cls+'" data-tip="建议改为: '+fixText+'">'+escapedWord+'</span><span class="arrow">→</span><span class="fix-text">'+fixText+"</span>)</span>";
 
-var regexStr=escapedWord.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-var regex=new RegExp(regexStr,'g');
+var regexStr=escapedWord.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+var regex=new RegExp(regexStr,"g");
 html=html.replace(regex,replacement);
 }
 
@@ -480,34 +465,33 @@ container.innerHTML=html;
 }
 
 function escapeHtml(str){
-var d=document.createElement('div');d.appendChild(document.createTextNode(str));return d.innerHTML;
+var d=document.createElement("div");d.appendChild(document.createTextNode(str));return d.innerHTML;
 }
 
 function switchTab(name,el){
-var ts=document.querySelectorAll('.tab'),cs=document.querySelectorAll('.tab-content');
-for(var i=0;i<ts.length;i++) ts[i].className='tab';
-for(var j=0;j<cs.length;j++) cs[j].className='tab-content';
-el.className='tab active';document.getElementById('tab-'+name).className='tab-content active';
+var ts=document.querySelectorAll(".tab"),cs=document.querySelectorAll(".tab-content");
+for(var i=0;i<ts.length;i++) ts[i].className="tab";
+for(var j=0;j<cs.length;j++) cs[j].className="tab-content";
+el.className="tab active";document.getElementById("tab-"+name).className="tab-content active";
 }
 
 function clearAll(){
-textareaEl.value='';fileNameEl.textContent='';fileInput.value='';
-document.getElementById('emptyState').style.display='block';
-document.getElementById('loadingState').style.display='none';
-document.getElementById('resultContent').style.display='none';
+textareaEl.value="";fileNameEl.textContent="";fileInput.value="";
+document.getElementById("emptyState").style.display="block";
+document.getElementById("loadingState").style.display="none";
+document.getElementById("resultContent").style.display="none";
 }
 
 function copyTxt(){
-var ct=document.getElementById('fixedText'),text=ct.innerText||ct.textContent;
-if(navigator.clipboard) navigator.clipboard.writeText(text).then(function(){alert('✅ 已复制到剪贴板');});
-else{var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ 已复制到剪贴板');}
+var ct=document.getElementById("fixedText"),text=ct.innerText||ct.textContent;
+if(navigator.clipboard) navigator.clipboard.writeText(text).then(function(){alert("✅ 已复制到剪贴板");});
+else{var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);alert("✅ 已复制到剪贴板");}
 }
 
-document.getElementById('btnClear').addEventListener('click',clearAll);
-document.getElementById('btnCopy').addEventListener('click',copyTxt);
-var tabs=document.querySelectorAll('.tab[data-tab]');
-for(var ti=0;ti<tabs.length;ti++) tabs[ti].addEventListener('click',function(){switchTab(this.getAttribute('data-tab'),this);});
+document.getElementById("btnClear").addEventListener("click",clearAll);
+document.getElementById("btnCopy").addEventListener("click",copyTxt);
+var tabs=document.querySelectorAll(".tab[data-tab]");
+for(var ti=0;ti<tabs.length;ti++) tabs[ti].addEventListener("click",function(){switchTab(this.getAttribute("data-tab"),this);});
 </script>
 </body>
 </html>
-<!-- deploy cache bust 1782388837 -->

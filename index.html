@@ -300,11 +300,13 @@ textareaEl.addEventListener('drop',function(e){e.preventDefault();this.classList
 
 // DEBUG: 显示规则数据
 try{
-var dbg='[DEBUG] RULES存在:'+(typeof RULES)+' | incomeHidden长度:'+RULES.incomeHidden.length;
-dbg+=' | [0]fix='+(RULES.incomeHidden[0]?RULES.incomeHidden[0].f:'NO_OBJ');
-dbg+=' | [1]fix='+(RULES.incomeHidden[1]?RULES.incomeHidden[1].f:'NO_OBJ');
-dbg+=' | keys[0]='+(Object.keys(RULES.incomeHidden[1]).join(','));
-document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">'+dbg+'</p>';
+var r0=RULES.incomeHidden[0];
+var dbg='[DEBUG] [0] JSON='+JSON.stringify(r0);
+dbg+=' | [0].w='+(r0.w);
+dbg+=' | [0].r='+(r0.r);
+dbg+=' | [0].f='+(r0.f);
+dbg+=' | [0]所有值: w=['+r0.w+'] l=['+r0.l+'] r=['+r0.r+'] f=['+r0.f+']';
+document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px;word-break:break-all">'+dbg+'</p>';
 }catch(e){
 document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">[DEBUG ERROR] '+e.message+'</p>';
 }

@@ -298,18 +298,6 @@ textareaEl.addEventListener('dragover',function(e){e.preventDefault();this.class
 textareaEl.addEventListener('dragleave',function(e){e.preventDefault();this.classList.remove('drop-zone-active');});
 textareaEl.addEventListener('drop',function(e){e.preventDefault();this.classList.remove('drop-zone-active');var f=e.dataTransfer.files[0];if(f) handleFile(f);});
 
-// DEBUG: 显示规则数据
-try{
-var r0=RULES.incomeHidden[0];
-var dbg='[DEBUG] [0] JSON='+JSON.stringify(r0);
-dbg+=' | [0].w='+(r0.w);
-dbg+=' | [0].r='+(r0.r);
-dbg+=' | [0].f='+(r0.f);
-dbg+=' | [0]所有值: w=['+r0.w+'] l=['+r0.l+'] r=['+r0.r+'] f=['+r0.f+']';
-document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px;word-break:break-all">'+dbg+'</p>';
-}catch(e){
-document.getElementById('emptyState').innerHTML+='<p style="color:red;font-size:12px">[DEBUG ERROR] '+e.message+'</p>';
-}
 
 document.getElementById('btnAudit').addEventListener('click',function(){
 var text=textareaEl.value.trim();
@@ -457,6 +445,14 @@ uniqueViolations.push({o:vo,t:bestLvl,f:bestFix});
 
 // 按长度降序排列，避免短词覆盖长词的一部分
 uniqueViolations.sort(function(a,b){return b.o.length-a.o.length});
+
+// DEBUG: show first 3 violation objects
+var dbg2='[RENDER-DEBUG] 前3条: ';
+for(var di=0;di<Math.min(3,uniqueViolations.length);di++){
+var dv=uniqueViolations[di];
+dbg2+='['+dv.o+'] f='+(dv.f||'UNDEF')+' | ';
+}
+document.getElementById('fixedText').innerHTML='<p style="color:red;font-size:12px">'+dbg2+'</p>';
 
 // 保留原文结构，对违规词做（颜色删除线）→ 修改建议绿色 格式
 var html=escapeHtml(text);
